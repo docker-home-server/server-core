@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  whoami:
+    image: containous/whoami
+    restart: always
+    networks:
+      - web
+    labels:
+      traefik.enable: true
+      traefik.frontend.rule: Host:whoami.h.${DOMAIN}
+
+networks:
+  web:
+    external: true
