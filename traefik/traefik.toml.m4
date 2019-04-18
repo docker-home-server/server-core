@@ -1,3 +1,6 @@
+# debug = true
+# [accessLog]
+
 [web]
 address = ":8080"
 
