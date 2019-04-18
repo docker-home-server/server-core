@@ -15,5 +15,4 @@ address = ":8080"
 
 [docker]
 domain = "h.DOMAIN"
-watch = true
 exposedByDefault = false
