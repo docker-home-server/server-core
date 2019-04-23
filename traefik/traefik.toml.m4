@@ -21,3 +21,13 @@ address = ":8080"
 [docker]
 domain = "h.DOMAIN"
 exposedByDefault = false
+
+ifelse(ENV, production,
+[acme]
+  email = "OWNER_EMAIL"
+  [acme.dnsChallenge]
+    provider = "cloudflare"
+  [[acme.domains]]
+    main = "*.h.DOMAIN"
+    sans = ["h.DOMAIN"]
+)

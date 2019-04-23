@@ -9,7 +9,10 @@ traefik: traefik/traefik.toml
 	cd $@; docker-compose up -d
 
 traefik/traefik.toml: traefik/traefik.toml.m4
-	m4 -D DOMAIN=$(DOMAIN) $^ >$@
+	m4 -D ENV=$(ENV) \
+		-D DOMAIN=$(DOMAIN) \
+		-D OWNER_EMAIL=$(OWNER_EMAIL) \
+		$^ >$@
 
 whoami:
 	cd $@; docker-compose up -d
