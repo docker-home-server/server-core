@@ -25,6 +25,8 @@ exposedByDefault = false
 ifelse(ENV, production,
 [acme]
   email = "OWNER_EMAIL"
+  storage = "/acme/certs.json"
+  entrypoint = "https"
   [acme.dnsChallenge]
     provider = "cloudflare"
   [[acme.domains]]
