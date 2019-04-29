@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ ! -d $IMAGE_DATA/ca/intermediate ]
+then
+  echo run create-root.sh and create-intermediate.sh first
+  exit
+fi
+
 case "$1" in
 --server)
   EXT=server_cert
@@ -16,7 +22,7 @@ esac
 
 COMMON_NAME="$1"
 
-cd intermediate
+cd $IMAGE_DATA/ca/intermediate
 
 openssl genrsa -out private/$COMMON_NAME.key.pem 2048
 chmod 400 private/$COMMON_NAME.key.pem

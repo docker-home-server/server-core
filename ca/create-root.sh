@@ -1,14 +1,19 @@
 #!/bin/bash
 
+SRC=`pwd`
 
-
-
-if [ ! -e openssl.cnf ]
+if [ -d $IMAGE_DATA/ca ]
 then
-  m4 -D ROOT_DIR=`pwd` -D CERT=root openssl.cnf.m4 >openssl.cnf
-  vi openssl.cnf
-  chmod 400 openssl.cnf
+  echo $IMAGE_DATA/ca already exists
+  exit
 fi
+
+mkdir -p $IMAGE_DATA/ca
+cd $IMAGE_DATA/ca
+
+m4 -D ROOT_DIR=`pwd` -D CERT=root $SRC/openssl.cnf.m4 >openssl.cnf
+vi openssl.cnf
+chmod 400 openssl.cnf
 
 mkdir certs crl newcerts private
 chmod 700 private

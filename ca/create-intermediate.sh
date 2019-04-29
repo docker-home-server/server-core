@@ -1,14 +1,27 @@
 #!/bin/bash
 
-[ -d intermediate ] || mkdir intermediate
+SRC=`pwd`
+
+if [ ! -d $IMAGE_DATA/ca ]
+then
+  echo run create-root.sh first
+  exit
+fi
+
+
+cd $IMAGE_DATA/ca
+
+if [ -d intermediate ]
+then
+  echo $IMAGE_DATA/ca/intermediate already exists
+  exit
+fi
+mkdir intermediate
 cd intermediate
 
-if [ ! -e openssl.cnf ]
-then
-  m4 -D ROOT_DIR=`pwd` -D CERT=intermediate ../openssl.cnf.m4 >openssl.cnf
-  vi openssl.cnf
-  chmod 400 openssl.cnf
-fi
+m4 -D ROOT_DIR=`pwd` -D CERT=intermediate $SRC/openssl.cnf.m4 >openssl.cnf
+vi openssl.cnf
+chmod 400 openssl.cnf
 
 mkdir certs crl csr dist newcerts private
 chmod 700 private
