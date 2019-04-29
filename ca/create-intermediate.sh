@@ -34,3 +34,8 @@ openssl req -config openssl.cnf -new -sha256 \
 chmod 444 certs/intermediate.cert.pem
 
 openssl x509 -noout -text -in certs/intermediate.cert.pem
+
+cat certs/intermediate.cert.pem \
+      ../certs/ca.cert.pem > certs/ca-chain.cert.pem
+
+chmod 444 certs/ca-chain.cert.pem
