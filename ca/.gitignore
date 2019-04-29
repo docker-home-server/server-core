@@ -1,5 +1,6 @@
 certs
 crl
+dist
 index.txt
 index.txt.attr
 index.txt.old

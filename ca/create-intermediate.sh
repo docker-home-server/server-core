@@ -10,7 +10,7 @@ then
   chmod 400 openssl.cnf
 fi
 
-mkdir certs crl csr newcerts private
+mkdir certs crl csr dist newcerts private
 chmod 700 private
 touch index.txt
 echo 1000 > serial
