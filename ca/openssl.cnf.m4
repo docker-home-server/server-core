@@ -16,13 +16,21 @@ database          = $dir/index.txt
 serial            = $dir/serial
 RANDFILE          = $dir/private/.rand
 
+ifelse(CERT, root,
 # The root key and root certificate.
 private_key       = $dir/private/ca.key.pem
-certificate       = $dir/certs/ca.cert.pem
+certificate       = $dir/certs/ca.cert.pem,
+CERT, intermediate,
+# The intermediate key and certificate.
+private_key       = $dir/private/intermediate.key.pem
+certificate       = $dir/certs/intermediate.cert.pem)
 
 # For certificate revocation lists.
 crlnumber         = $dir/crlnumber
-crl               = $dir/crl/ca.crl.pem
+ifelse(CERT, root,
+crl               = $dir/crl/ca.crl.pem,
+CERT, intermediate,
+crl               = $dir/crl/intermediate.crl.pem)
 crl_extensions    = crl_ext
 default_crl_days  = 30
 
@@ -33,7 +41,10 @@ name_opt          = ca_default
 cert_opt          = ca_default
 default_days      = 375
 preserve          = no
-policy            = policy_strict
+ifelse(CERT, root,
+policy            = policy_strict,
+CERT, intermediate,
+policy            = policy_loose)
 
 [ policy_strict ]
 # The root CA should only sign intermediate certificates that match.
