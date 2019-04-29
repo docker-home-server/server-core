@@ -1,5 +1,11 @@
-openssl.cnf
-index.txt
-serial
-private
 certs
+crl
+index.txt
+index.txt.attr
+index.txt.old
+intermediate
+newcerts
+openssl.cnf
+private
+serial
+serial.old
