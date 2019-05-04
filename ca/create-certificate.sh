@@ -49,14 +49,14 @@ fi
 
 openssl x509 -noout -text -in "certs/$COMMON_NAME.cert.pem"
 
-if [ -e "dist/$COMMON_NAME.full.pem" ]
+if [ ! -e "dist/$COMMON_NAME.full.pem" ]
 then
   cat "private/$COMMON_NAME.key.pem" \
       "certs/$COMMON_NAME.cert.pem" \
       certs/ca-chain.cert.pem > "dist/$COMMON_NAME.full.pem"
 fi
 
-if [ -e "dist/$COMMON_NAME.full.pfx" ]
+if [ ! -e "dist/$COMMON_NAME.full.pfx" ]
 then
   openssl pkcs12 -export \
       -inkey "private/$COMMON_NAME.key.pem" \
