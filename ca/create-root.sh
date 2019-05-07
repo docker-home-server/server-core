@@ -12,8 +12,6 @@ mkdir -p $IMAGE_DATA/ca
 cd $IMAGE_DATA/ca
 
 m4 -D ROOT_DIR=`pwd` -D CERT=root $SRC/openssl.cnf.m4 >openssl.cnf
-vi openssl.cnf
-chmod 400 openssl.cnf
 
 mkdir certs crl newcerts private
 chmod 700 private
@@ -26,6 +24,7 @@ chmod 400 private/ca.key.pem
 openssl req -config openssl.cnf \
       -key private/ca.key.pem \
       -new -x509 -days 7300 -sha256 -extensions v3_ca \
+      -subj "$CA_SUBJECT/CN=Root" \
       -out certs/ca.cert.pem
 chmod 444 certs/ca.cert.pem
 

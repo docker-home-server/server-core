@@ -20,8 +20,6 @@ mkdir intermediate
 cd intermediate
 
 m4 -D ROOT_DIR=`pwd` -D CERT=intermediate $SRC/openssl.cnf.m4 >openssl.cnf
-vi openssl.cnf
-chmod 400 openssl.cnf
 
 mkdir certs crl csr dist newcerts private
 chmod 700 private
@@ -34,6 +32,7 @@ chmod 400 private/intermediate.key.pem
 
 openssl req -config openssl.cnf -new -sha256 \
       -key private/intermediate.key.pem \
+      -subj "$CA_SUBJECT/CN=Intermediate" \
       -out csr/intermediate.csr.pem
 
 (
