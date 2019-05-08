@@ -32,7 +32,7 @@ chmod 400 private/intermediate.key.pem
 
 openssl req -config openssl.cnf -new -sha256 \
       -key private/intermediate.key.pem \
-      -subj "$CA_SUBJECT/CN=Intermediate" \
+      -subj "$CA_SUBJECT/CN=$CN_PREFIX Intermediate" \
       -out csr/intermediate.csr.pem
 
 (
