@@ -35,4 +35,8 @@ bootstrap-ca:
 	cd ca; ./create-certificate.sh --server \
 		*.h.$(DOMAIN),h.$(DOMAIN)
 
-.PHONY: bootstrap up down $(SERVICES)
+clean:
+	rm -f traefik/traefik.toml
+	rm -rf traefik/auth-ca
+
+.PHONY: bootstrap up down clean $(SERVICES)
