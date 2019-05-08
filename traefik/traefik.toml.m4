@@ -15,6 +15,11 @@ address = ":8080"
   [entryPoints.https]
   address = ":443"
     [entryPoints.https.tls]
+ifelse(ENV, development,
+      [[entryPoints.https.tls.certificates]]
+      certFile = "/etc/ssl/auth-ca/star.h.DOMAIN.full.pem"
+      keyFile = "/etc/ssl/auth-ca/star.h.DOMAIN.key.pem"
+)
 
 [retry]
 

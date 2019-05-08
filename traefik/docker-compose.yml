@@ -12,6 +12,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./traefik.toml:/traefik.toml
       - ${IMAGE_DATA}/traefik/acme:/acme
+      - ./auth-ca:/etc/ssl/auth-ca
     networks:
       - web
     environment:
