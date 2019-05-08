@@ -17,7 +17,15 @@ traefik/traefik.toml: traefik/traefik.toml.m4
 whoami:
 	cd $@; docker-compose up -d
 
-bootstrap:
+bootstrap: bootstrap-docker bootstrap-ca
+
+bootstrap-docker:
 	docker network create web
+
+bootstrap-ca:
+	cd ca; ./create-root.sh
+	cd ca; ./create-intermediate.sh
+	cd ca; ./create-certificate.sh --server \
+		*.h.$(DOMAIN),h.$(DOMAIN)
 
 .PHONY: bootstrap up down $(SERVICES)
