@@ -8,7 +8,7 @@ services:
       - web
     labels:
       traefik.enable: true
-      traefik.frontend.rule: Host:whoami.h.${DOMAIN}
+      traefik.frontend.rule: Host:whoami.${DOMAIN}
 
 networks:
   web:

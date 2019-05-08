@@ -17,8 +17,8 @@ traefik/traefik.toml: traefik/traefik.toml.m4
 traefik/auth-ca:
 	mkdir $@
 ifeq ($(ENV),development)
-	cp $(IMAGE_DATA)/ca/intermediate/dist/star.h.$(DOMAIN).full.pem $@
-	cp $(IMAGE_DATA)/ca/intermediate/private/star.h.$(DOMAIN).key.pem $@
+	cp $(IMAGE_DATA)/ca/intermediate/dist/star.$(DOMAIN).full.pem $@
+	cp $(IMAGE_DATA)/ca/intermediate/private/star.$(DOMAIN).key.pem $@
 endif
 
 whoami:
@@ -32,8 +32,7 @@ bootstrap-docker:
 bootstrap-ca:
 	cd ca; ./create-root.sh
 	cd ca; ./create-intermediate.sh
-	cd ca; ./create-certificate.sh --server \
-		*.h.$(DOMAIN),h.$(DOMAIN)
+	cd ca; ./create-certificate.sh --server *.$(DOMAIN),$(DOMAIN)
 
 clean:
 	rm -f traefik/traefik.toml
