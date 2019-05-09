@@ -15,6 +15,9 @@ address = ":8080"
   [entryPoints.https]
   address = ":443"
     [entryPoints.https.tls]
+      [entryPoints.https.tls.ClientCA]
+      files = ["/etc/ssl/auth-ca/ca-chain.cert.pem"]
+      optional = false
 ifelse(ENV, development,
       [[entryPoints.https.tls.certificates]]
       certFile = "/etc/ssl/auth-ca/star.DOMAIN.full.pem"
