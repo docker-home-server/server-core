@@ -24,6 +24,7 @@ case "$1" in
   shift
   EXT=usr_cert
   COMMON_NAME="$1"
+  CERT_FILENAME="${COMMON_NAME}"
   m4 -D ROOT_DIR=`pwd` -D CERT=intermediate $SRC/openssl.cnf.m4 >openssl.cnf
   ;;
 *)

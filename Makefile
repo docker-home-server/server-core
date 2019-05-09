@@ -16,6 +16,7 @@ traefik/traefik.toml: traefik/traefik.toml.m4
 
 traefik/auth-ca:
 	mkdir $@
+	cp $(IMAGE_DATA)/ca/intermediate/certs/ca-chain.cert.pem $@
 ifeq ($(ENV),development)
 	cp $(IMAGE_DATA)/ca/intermediate/dist/star.$(DOMAIN).full.pem $@
 	cp $(IMAGE_DATA)/ca/intermediate/private/star.$(DOMAIN).key.pem $@
