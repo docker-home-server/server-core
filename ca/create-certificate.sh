@@ -27,6 +27,10 @@ case "$1" in
   CERT_FILENAME="${COMMON_NAME}"
   m4 -D ROOT_DIR=`pwd` -D CERT=intermediate $SRC/openssl.cnf.m4 >openssl.cnf
   ;;
+-v|--verbose)
+  shift
+  VERBOSE=1
+  ;;
 *)
   echo 'usage: create-certificate.sh --server domain[,domain,...]' 2>&1
   echo '    or create-certificate.sh --client name' 2>&1
@@ -76,7 +80,10 @@ then
   chmod 444 "certs/$CERT_FILENAME.cert.pem"
 fi
 
-openssl x509 -noout -text -in "certs/$CERT_FILENAME.cert.pem"
+if [ -n "$VERBOSE" ]
+then
+  openssl x509 -noout -text -in "certs/$CERT_FILENAME.cert.pem"
+fi
 
 if [ ! -e "dist/$CERT_FILENAME.full.pem" ]
 then
