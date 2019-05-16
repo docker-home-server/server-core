@@ -28,7 +28,7 @@ whoami:
 bootstrap: bootstrap-docker bootstrap-ca
 
 bootstrap-docker:
-	docker network create web
+	-docker network create web
 
 bootstrap-ca:
 	cd ca; ./create-root.sh
