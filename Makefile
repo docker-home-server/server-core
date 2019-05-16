@@ -33,7 +33,9 @@ bootstrap-docker:
 bootstrap-ca:
 	cd ca; ./create-root.sh
 	cd ca; ./create-intermediate.sh
+ifeq ($(ENV),development)
 	cd ca; ./create-certificate.sh --server *.$(DOMAIN),$(DOMAIN)
+endif
 
 clean:
 	rm -f traefik/traefik.toml
