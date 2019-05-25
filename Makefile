@@ -1,9 +1,10 @@
-SERVICES=traefik whoami
+SERVICES ?= whoami
+ALL_SERVICES := $(SERVICES) traefik
 
-up: $(SERVICES)
+up: $(ALL_SERVICES)
 
 down:
-	for i in $(SERVICES); do cd $$i; docker-compose down; cd ..; done
+	for i in $(ALL_SERVICES); do cd $$i; docker-compose down; cd ..; done
 
 traefik: traefik/traefik.toml traefik/auth-ca
 	cd $@; docker-compose up -d
@@ -22,7 +23,7 @@ ifeq ($(ENV),development)
 	cp $(IMAGE_DATA)/ca/intermediate/private/star.$(DOMAIN).key.pem $@
 endif
 
-whoami:
+$(SERVICES):
 	cd $@; docker-compose up -d
 
 bootstrap: bootstrap-docker bootstrap-ca
