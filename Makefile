@@ -42,4 +42,4 @@ clean:
 	rm -f traefik/traefik.toml
 	rm -rf traefik/auth-ca
 
-.PHONY: bootstrap up down clean $(SERVICES)
+.PHONY: bootstrap up down clean $(ALL_SERVICES)
