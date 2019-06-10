@@ -1,8 +1,9 @@
 defaultEntryPoints = ["http", "https"]
 
-# debug = true
-# [accessLog]
-
+ifelse(ENV, development,
+debug = true
+[accessLog]
+)
 [web]
 address = ":8080"
 
