@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  app:
+  traefik:
     image: traefik:1.7
     restart: always
     ports:
