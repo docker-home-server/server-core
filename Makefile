@@ -6,6 +6,9 @@ up: $(ALL_SERVICES)
 down:
 	for i in $(ALL_SERVICES); do cd $$i; docker-compose down; cd ..; done
 
+pull:
+	for i in $(ALL_SERVICES); do cd $$i; docker-compose pull; cd ..; done
+
 traefik: traefik/traefik.toml traefik/auth-ca
 	cd $@; docker-compose up -d
 
