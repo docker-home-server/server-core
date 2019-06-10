@@ -1,4 +1,4 @@
-SERVICES ?= whoami
+SERVICES ?= whoami nginx
 ALL_SERVICES := $(SERVICES) traefik
 
 up: $(ALL_SERVICES)
