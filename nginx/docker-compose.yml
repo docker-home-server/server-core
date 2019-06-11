@@ -4,6 +4,8 @@ services:
   nginx:
     image: nginx:1.17-alpine
     restart: always
+    volumes:
+      - ./content/home:/usr/share/nginx/html:ro
     networks:
       - web
     labels:
