@@ -1,4 +1,4 @@
-SERVICES ?= whoami
+SERVICES ?= whoami nginx
 ALL_SERVICES := $(SERVICES) traefik
 
 up: $(ALL_SERVICES)
@@ -8,6 +8,9 @@ down:
 
 pull:
 	for i in $(ALL_SERVICES); do cd $$i; docker-compose pull; cd ..; done
+
+$(SERVICES):
+	cd $@; docker-compose up -d
 
 traefik: traefik/traefik.toml traefik/auth-ca
 	cd $@; docker-compose up -d
@@ -26,8 +29,11 @@ ifeq ($(ENV),development)
 	cp $(IMAGE_DATA)/ca/intermediate/private/star.$(DOMAIN).key.pem $@
 endif
 
-$(SERVICES):
-	cd $@; docker-compose up -d
+nginx: nginx/content/home/index.html
+
+nginx/content/home/index.html: nginx/content/home/index.html.m4
+	m4 -D DOMAIN=$(DOMAIN) \
+		$^ >$@
 
 bootstrap: bootstrap-docker bootstrap-ca
 
