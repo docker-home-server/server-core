@@ -55,6 +55,11 @@
     </header>
 
     <main>
+      <h2>Applications</h2>
+      <ul class="buttons">
+        include(`applications.html')
+      </ul>
+
       <h2>Housekeeping</h2>
       <ul class="buttons">
         <li><a href="https://whoami.DOMAIN/">whoami</a></li>

@@ -31,9 +31,14 @@ endif
 
 nginx: nginx/content/home/index.html
 
-nginx/content/home/index.html: nginx/content/home/index.html.m4
+nginx/content/home/index.html: nginx/content/home/index.html.m4 \
+	nginx/content/home/applications.html
 	m4 -D DOMAIN=$(DOMAIN) \
+		-I nginx/content/home \
 		$^ >$@
+
+nginx/content/home/applications.html: */application.html
+	cat $^ >$@
 
 bootstrap: bootstrap-docker bootstrap-ca
 
