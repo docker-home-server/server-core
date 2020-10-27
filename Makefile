@@ -12,7 +12,8 @@ pull:
 $(SERVICES):
 	cd $@; docker-compose up -d
 
-traefik: traefik/traefik.toml traefik/auth-ca
+traefik: traefik/traefik.toml traefik/auth-ca \
+	traefik/conf/dashboard.toml traefik/conf/tls.toml
 	cd $@; docker-compose up -d
 
 traefik/auth-ca:

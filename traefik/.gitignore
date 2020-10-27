@@ -1,2 +1,4 @@
 auth-ca
 traefik.toml
+conf/dashboard.toml
+conf/tls.toml

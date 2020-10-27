@@ -1,49 +1,35 @@
-#[global]
-#debug = true
-#[log]
-#level = "debug"
-
-[api]
-dashboard = true
+changequote(<<, >>)dnl
+[log]
+  level = "debug"
 
 [entryPoints]
-  [entryPoints.web]
-  address = ":80"
-#    [entryPoints.http.redirect]
-#    entryPoint = "https"
-
-  [entryPoints.web-secure]
-  address = ":443"
-#    [entryPoints.https.tls]
-#      [entryPoints.https.tls.ClientCA]
-#      files = ["/etc/ssl/auth-ca/ca-chain.cert.pem"]
-#      optional = false
-ifelse(ENV, development,
-#      [[entryPoints.https.tls.certificates]]
-#      certFile = "/etc/ssl/auth-ca/star.DOMAIN.full.pem"
-#      keyFile = "/etc/ssl/auth-ca/star.DOMAIN.key.pem"
-)
-
-#[retry]
-
-[providers.docker]
-#domain = "DOMAIN"
-exposedByDefault = false
-changequote(<<, >>)
-defaultRule = """
-Host(`{{ \
-  regexReplaceAll "-[^-]*$" (normalize .Name) "" \
-}}.DOMAIN`)"""
-changequote(`, ')
-
+  [entryPoints.http]
+    address = ":80"
+  [entryPoints.https]
+    address = ":443"
 ifelse(ENV, production,
-#[acme]
-#  email = "OWNER_EMAIL"
-#  storage = "/acme/certs.json"
-#  entrypoint = "https"
-#  [acme.dnsChallenge]
-#    provider = "cloudflare"
-#  [[acme.domains]]
-#    main = "*.DOMAIN"
-#    sans = ["DOMAIN"]
-)
+    [entryPoints.https.http.tls]
+      certResolver = "wildcard"
+      [[entryPoints.https.http.tls.domains]]
+        main = "*.DOMAIN"
+        sans = ["DOMAIN"]
+
+[certificatesResolvers.wildcard.acme]
+  email = "OWNER_EMAIL"
+  storage = "/acme/certs.json"
+  [certificatesResolvers.wildcard.acme.dnsChallenge]
+    provider = "cloudflare"
+)dnl
+
+[providers]
+  [providers.file]
+    directory = "/conf"
+  [providers.docker]
+    exposedByDefault = false
+    defaultRule = """
+      Host(`{{ \
+        regexReplaceAll "-[^-]*$" (normalize .Name) "" \
+      }}.DOMAIN`)"""
+
+[api]
+  dashboard = true
