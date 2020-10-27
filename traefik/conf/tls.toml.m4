@@ -10,3 +10,11 @@ ifelse(ENV, development,
     [tls.options.default.clientAuth]
       caFiles = ["/etc/ssl/auth-ca/ca-chain.cert.pem"]
       clientAuthType = "RequireAndVerifyClientCert"
+
+[http.middlewares]
+  [http.middlewares.https-redirect.redirectscheme]
+    scheme = "https"
+    permanent = true
+ifelse(ENV, development,
+<<    >>port = HTTPS_PORT
+)dnl

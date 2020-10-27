@@ -59,4 +59,5 @@ clean:
 	m4 -D ENV=$(ENV) \
 		-D DOMAIN=$(DOMAIN) \
 		-D OWNER_EMAIL=$(OWNER_EMAIL) \
+		-D HTTPS_PORT=$(HTTPS_PORT) \
 		$< >$*.toml

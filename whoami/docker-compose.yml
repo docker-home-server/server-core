@@ -8,8 +8,10 @@ services:
       - web
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.whoami-http.entrypoints=http"
+      - "traefik.http.routers.whoami-http.middlewares=https-redirect@file"
+      - "traefik.http.routers.whoami.entrypoints=https"
       - "traefik.http.routers.whoami.tls=true"
-      - "traefik.http.middlewares.httpsupgrade.redirectscheme.scheme=https"
 
 networks:
   web:
