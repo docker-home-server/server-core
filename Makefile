@@ -15,12 +15,6 @@ $(SERVICES):
 traefik: traefik/traefik.toml traefik/auth-ca
 	cd $@; docker-compose up -d
 
-traefik/traefik.toml: traefik/traefik.toml.m4
-	m4 -D ENV=$(ENV) \
-		-D DOMAIN=$(DOMAIN) \
-		-D OWNER_EMAIL=$(OWNER_EMAIL) \
-		$^ >$@
-
 traefik/auth-ca:
 	mkdir $@
 	cp $(IMAGE_DATA)/ca/intermediate/certs/ca-chain.cert.pem $@
@@ -57,3 +51,11 @@ clean:
 	rm -rf traefik/auth-ca
 
 .PHONY: bootstrap up down clean $(ALL_SERVICES)
+
+.SUFFIXES: .toml.m4 .toml
+
+%.toml: %.toml.m4
+	m4 -D ENV=$(ENV) \
+		-D DOMAIN=$(DOMAIN) \
+		-D OWNER_EMAIL=$(OWNER_EMAIL) \
+		$< >$*.toml
