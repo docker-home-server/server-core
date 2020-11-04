@@ -1,5 +1,5 @@
 changequote(<<, >>)dnl
-ifelse(ENV, development,
+ifelse(ACME, no,
 [[tls.certificates]]
   certFile = "/etc/ssl/auth-ca/star.DOMAIN.full.pem"
   keyFile = "/etc/ssl/auth-ca/star.DOMAIN.key.pem"

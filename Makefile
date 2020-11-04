@@ -19,7 +19,7 @@ traefik: traefik/traefik.toml traefik/auth-ca \
 traefik/auth-ca:
 	mkdir $@
 	cp $(IMAGE_DATA)/ca/intermediate/certs/ca-chain.cert.pem $@
-ifeq ($(ENV),development)
+ifeq ($(ACME),no)
 	cp $(IMAGE_DATA)/ca/intermediate/dist/star.$(DOMAIN).full.pem $@
 	cp $(IMAGE_DATA)/ca/intermediate/private/star.$(DOMAIN).key.pem $@
 endif
@@ -43,7 +43,7 @@ bootstrap-docker:
 bootstrap-ca:
 	cd ca; ./create-root.sh
 	cd ca; ./create-intermediate.sh
-ifeq ($(ENV),development)
+ifeq ($(ACME),no)
 	cd ca; ./create-certificate.sh --server *.$(DOMAIN),$(DOMAIN)
 endif
 
@@ -58,6 +58,7 @@ clean:
 
 %.toml: %.toml.m4
 	m4 -D ENV=$(ENV) \
+		-D ACME=$(ACME) \
 		-D DOMAIN=$(DOMAIN) \
 		-D OWNER_EMAIL=$(OWNER_EMAIL) \
 		-D HTTPS_PORT=$(HTTPS_PORT) \

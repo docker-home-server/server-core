@@ -7,7 +7,7 @@ changequote(<<, >>)dnl
     address = ":80"
   [entryPoints.https]
     address = ":443"
-ifelse(ENV, production,
+ifelse(ACME, yes,
     [entryPoints.https.http.tls]
       certResolver = "wildcard"
       [[entryPoints.https.http.tls.domains]]
