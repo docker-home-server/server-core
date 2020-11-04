@@ -1,16 +1,21 @@
-version: '3'
+version: "3"
 
 services:
   nginx:
-    image: nginx:1.17-alpine
+    image: nginx:1.19-alpine
     restart: always
     volumes:
       - ./content/home:/usr/share/nginx/html:ro
     networks:
       - web
     labels:
-      traefik.enable: true
-      traefik.frontend.rule: Host:${DOMAIN}
+      - "traefik.enable=true"
+      - "traefik.http.routers.nginx.entrypoints=http"
+      - "traefik.http.routers.nginx.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.nginx.middlewares=https-redirect@file"
+      - "traefik.http.routers.https-nginx.entrypoints=https"
+      - "traefik.http.routers.https-nginx.tls=true"
+      - "traefik.http.routers.https-nginx.rule=Host(`${DOMAIN}`)"
 
 networks:
   web:

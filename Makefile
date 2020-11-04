@@ -29,6 +29,7 @@ nginx: nginx/content/home/index.html
 nginx/content/home/index.html: nginx/content/home/index.html.m4 \
 	nginx/content/home/applications.html
 	m4 -D DOMAIN=$(DOMAIN) \
+		-D HTTPS_PORT=$(HTTPS_PORT) \
 		-I nginx/content/home \
 		$< >$@
 

@@ -62,8 +62,12 @@
 
       <h2>Housekeeping</h2>
       <ul class="buttons">
+ifelse(HTTPS_PORT, 443,
         <li><a href="https://whoami.DOMAIN/">whoami</a></li>
-        <li><a href="http://DOMAIN:8080/">traefik dashboard</a></li>
+        <li><a href="https://traefik.DOMAIN/dashboard/">traefik dashboard</a></li>,
+        <li><a href="https://whoami.DOMAIN:HTTPS_PORT/">whoami</a></li>
+        <li><a href="https://traefik.DOMAIN:HTTPS_PORT/dashboard/">traefik dashboard</a></li>
+)dnl
       </ul>
     </main>
   </body>
