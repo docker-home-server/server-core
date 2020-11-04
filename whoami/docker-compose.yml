@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   whoami:
@@ -8,10 +8,10 @@ services:
       - web
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami-http.entrypoints=http"
-      - "traefik.http.routers.whoami-http.middlewares=https-redirect@file"
-      - "traefik.http.routers.whoami.entrypoints=https"
-      - "traefik.http.routers.whoami.tls=true"
+      - "traefik.http.routers.whoami.entrypoints=http"
+      - "traefik.http.routers.whoami.middlewares=https-redirect@file"
+      - "traefik.http.routers.https-whoami.entrypoints=https"
+      - "traefik.http.routers.https-whoami.tls=true"
 
 networks:
   web:
