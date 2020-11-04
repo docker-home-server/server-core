@@ -49,6 +49,7 @@ endif
 
 clean:
 	rm -f traefik/traefik.toml
+	rm -f traefik/conf/dashboard.toml traefik/conf/tls.toml
 	rm -rf traefik/auth-ca
 
 .PHONY: bootstrap up down clean $(ALL_SERVICES)
