@@ -8,8 +8,8 @@ if [ ! -d $IMAGE_DATA/ca/intermediate ]; then
 fi
 
 usage() {
-  echo 'usage: create-certificate.sh [-v | --verbose] --server domain[,domain,...]' 2>&1
-  echo '    or create-certificate.sh [-v | --verbose] --client name' 2>&1
+  echo 'usage: create-certificate.sh [-v | --verbose] [--renew] --server domain[,domain,...]' 2>&1
+  echo '    or create-certificate.sh [-v | --verbose] [--renew] --client name' 2>&1
   exit 1
 }
 
@@ -22,6 +22,7 @@ while (($#)); do
   case "$1" in
   --server) TYPE=server ;;
   --client) TYPE=client ;;
+  --renew) RENEW=1 ;;
   -v | --verbose) VERBOSE=1 ;;
   -*) usage ;;
   --)
@@ -63,7 +64,11 @@ if [ ! -e "private/$CERT_FILENAME.key.pem" ]; then
   chmod 400 "private/$CERT_FILENAME.key.pem"
 fi
 
-if [ ! -e "csr/$CERT_FILENAME.csr.pem" ]; then
+if [ -n "$RENEW" ]; then
+  openssl ca -config openssl.cnf -updatedb
+fi
+
+if [ -n "$RENEW" -o ! -e "csr/$CERT_FILENAME.csr.pem" ]; then
   if [ -n "$SAN" ]; then
     openssl req -config openssl.cnf \
       -key "private/$CERT_FILENAME.key.pem" \
@@ -79,7 +84,8 @@ if [ ! -e "csr/$CERT_FILENAME.csr.pem" ]; then
   fi
 fi
 
-if [ ! -e "certs/$CERT_FILENAME.cert.pem" ]; then
+if [ -n "$RENEW" -o ! -e "certs/$CERT_FILENAME.cert.pem" ]; then
+  [ -n "$RENEW" ] && rm -f "certs/$CERT_FILENAME.cert.pem"
   if [ -n "$SAN" ]; then
     openssl ca -config openssl.cnf \
       -extensions $EXT -extensions san \
@@ -100,13 +106,13 @@ if [ -n "$VERBOSE" ]; then
   openssl x509 -noout -text -in "certs/$CERT_FILENAME.cert.pem"
 fi
 
-if [ ! -e "dist/$CERT_FILENAME.full.pem" ]; then
+if [ -n "$RENEW" -o ! -e "dist/$CERT_FILENAME.full.pem" ]; then
   cat "private/$CERT_FILENAME.key.pem" \
     "certs/$CERT_FILENAME.cert.pem" \
     certs/ca-chain.cert.pem >"dist/$CERT_FILENAME.full.pem"
 fi
 
-if [ ! -e "dist/$CERT_FILENAME.full.pfx" ]; then
+if [ -n "$RENEW" -o ! -e "dist/$CERT_FILENAME.full.pfx" ]; then
   openssl pkcs12 -export \
     -inkey "private/$CERT_FILENAME.key.pem" \
     -in "certs/$CERT_FILENAME.cert.pem" \
