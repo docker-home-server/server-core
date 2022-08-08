@@ -7,11 +7,41 @@ if [ ! -d $IMAGE_DATA/ca/intermediate ]; then
   exit
 fi
 
+usage() {
+  echo 'usage: create-certificate.sh [-v | --verbose] --server domain[,domain,...]' 2>&1
+  echo '    or create-certificate.sh [-v | --verbose] --client name' 2>&1
+  exit 1
+}
+
 cd $IMAGE_DATA/ca/intermediate
 
-case "$1" in
---server)
+args=()
+TYPE=''
+
+while (($#)); do
+  case "$1" in
+  --server) TYPE=server ;;
+  --client) TYPE=client ;;
+  -v | --verbose) VERBOSE=1 ;;
+  -*) usage ;;
+  --)
+    shift
+    args+=("$@")
+    set --
+    ;;
+  *) args+=("$1") ;;
+  esac
   shift
+done
+
+set -- "${args[@]}"
+
+if [ -z "$1" ]; then
+  usage
+fi
+
+case "$TYPE" in
+server)
   EXT=server_cert
   COMMON_NAME="${1%%,*}"
   SAN="DNS:${1//,/,DNS:}"
@@ -19,22 +49,13 @@ case "$1" in
   m4 -D ROOT_DIR=$(pwd) -D CERT=intermediate \
     -D SAN=$SAN $SRC/openssl.cnf.m4 >openssl.cnf
   ;;
---client)
-  shift
+client)
   EXT=usr_cert
   COMMON_NAME="$1"
   CERT_FILENAME="${COMMON_NAME}"
   m4 -D ROOT_DIR=$(pwd) -D CERT=intermediate $SRC/openssl.cnf.m4 >openssl.cnf
   ;;
--v | --verbose)
-  shift
-  VERBOSE=1
-  ;;
-*)
-  echo 'usage: create-certificate.sh --server domain[,domain,...]' 2>&1
-  echo '    or create-certificate.sh --client name' 2>&1
-  exit
-  ;;
+*) usage ;;
 esac
 
 if [ ! -e "private/$CERT_FILENAME.key.pem" ]; then
